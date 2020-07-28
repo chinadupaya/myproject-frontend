@@ -1,0 +1,124 @@
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <h4>
+        Rooms and beds
+    </h4>
+    <div class="row">
+        <div class="col-md-4 col-6">
+            <div class="form-group">
+                <label for="formBedCount">Bed Count</label>
+                <input type="number" 
+                    class="form-control" 
+                    id="formBedCount" 
+                    min="0" 
+                    formControlName="bedCount"
+                    placeholder="Min beds"/>
+            </div>
+        </div>
+        <div class="col-md-4 col-6">
+            <div class="form-group">
+                <label for="formBathCount">Bath Count</label>
+                <input type="number" 
+                    class="form-control" 
+                    id="formBedCount" 
+                    min="0" 
+                    formControlName="bathCount"
+                    placeholder="Min baths"/>
+            </div>
+        </div>
+    </div> 
+    <h4>
+        Property type
+    </h4>
+    <div class="form-group">
+        <label for="formPropertyType">Property Type</label>
+        <select class="form-control" id="formPropertyType" formControlName="propertyType">
+            <option value="">All</option>
+            <option value="house">House</option>
+            <option value="apartment">Apartment</option>
+            <option value="bnb">Bed and Breakfast</option>
+            <option value="botique_hotel">Botique Hotel</option>
+            <option value="bungalow">Bungalow</option>
+            <option value="cabin">Cabin</option>
+            <option value="cottage">Cottage</option>
+            <option value="guest_house">Guest House</option>
+            <option value="guest_suite">Guest Suite</option>
+            <option value="hotel">Hotel</option>
+            <option value="hostel">Hostel</option>
+            <option value="loft">Loft</option>
+            <option value="resort">Resort</option>
+            <option value="serve_apartment">Serve Apartment</option>
+            <option value="townhouse">Townhouse</option>
+            <option value="villa">Villa</option>
+        </select>
+        </div>
+    <h4>
+        Room type
+    </h4>
+    <div class="form-group">
+        <label for="formRoomType">Room Type</label>
+        <select class="form-control" id="formRoomType" formControlName="roomType">
+            <option value="">All</option>
+            <option value="shared">Shared</option>
+            <option value="private">Private</option>
+            <option value="entire">Entire Place</option>
+        </select>
+    </div>
+    <h4>
+        Sort by
+    </h4>
+    <div class="form-group">
+        <label for="formSortBy">Sort by</label>
+        <div class="row">
+            <div class="col-md-4 col-6">
+                <select class="form-control" id="formSortValue" formControlName="sortByValue">
+                    <option value="date">Date Created</option>
+                    <option value="price">Price</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-6">
+                <select class="form-control" id="formSortOrder" formControlName="sortByOrder">
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-info">Submit</button>
+</form>
+<div style="padding: 13px;">
+<div class="container mb-3" *ngFor="let listing of listings">
+    <div class="row py-1">
+        <div class="col-md-4">
+            <div class="image"></div>
+        </div>
+        <div class="col-md-8">
+            <h4>
+                <a routerLink="../listings/{{listing.id}}" class="text-secondary">
+                    {{listing.name}}
+                </a>
+            </h4> 
+            <h6>{{listing.description}}</h6>
+            <p>
+                {{listing.max_guest}} guests · {{listing.bed_count}} beds · {{listing.bathroom_count}} bathrooms 
+            </p>
+            <strong class="card-text">Php{{listing.price_by_night}}/night</strong>
+        </div>
+    </div>
+        
+    </div>
+
+<button  class="btn btn-outline-dark" (click)="back()">
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z"/>
+        <path fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+      </svg>
+    Back
+</button>
+<button class="btn btn-outline-dark" (click)="next()">
+        Next
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
+            <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z"/>
+        </svg>
+</button>

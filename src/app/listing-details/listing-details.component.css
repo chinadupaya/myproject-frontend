@@ -1,0 +1,12 @@
+span.roomStyle{
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+.bookingForm{
+    background-color: rgb(241, 241, 241);
+    padding: 1em;
+    border-radius:10px;
+}
+.input-group{
+    margin-top:1em;
+}

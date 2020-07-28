@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../api.service';
+import { first } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +14,10 @@ export class SignupComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder,) { }
+  constructor(private formBuilder: FormBuilder,
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -28,5 +34,16 @@ export class SignupComponent implements OnInit {
     if(this.form.invalid){
       return;
     }
+    this.loading=true;
+    this.apiService.registerUser(this.form.value.email, this.form.value.firstName, this.form.value.lastName, this.form.value.password)
+      .pipe(first())
+      .subscribe(
+        data => {
+            this.router.navigate(['../login'], { relativeTo: this.route });
+        },
+        error => {
+            this.loading = false;
+        });
+
   }
 }

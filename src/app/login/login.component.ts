@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { ApiService } from '../api.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,7 +14,11 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, 
+    private apiService: ApiService,
+    private cookieService: CookieService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -28,6 +34,12 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.loading=true;
+    this.apiService.loginUser(this.form.value.email, this.form.value.password)
+    .subscribe(data=> {console.log(data);
+      this.cookieService.set( 'Test', JSON.stringify(data)); 
+      this.loading=false; 
+      this.router.navigate(['../home'], { relativeTo: this.route }); 
+    })
   }
 
 }

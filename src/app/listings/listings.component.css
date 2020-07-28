@@ -1,0 +1,19 @@
+
+
+  .image {
+    background: #000;
+    height: 150px
+  }
+
+  .content {
+    float: left;
+    height: 140px;
+    width: 75%;
+    overflow: hidden;
+    padding: 5px;
+  }
+
+.row.py-1{
+    border-radius:10px;
+    border: 1px solid black;
+  }
