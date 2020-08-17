@@ -1,0 +1,13 @@
+div.user-profile-circle{
+    background-color: grey;
+    border-radius: 50%;
+    width: 150px;
+    height:150px;
+    display: flex; /* or inline-flex */
+    align-items: center; 
+    justify-content: center;
+}
+div.user-profile-circle h3{
+    color:white;
+    font-size: 5em;
+}

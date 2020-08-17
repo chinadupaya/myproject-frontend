@@ -1,0 +1,26 @@
+<div class="card">
+    <div class="card-body">
+        <div class="card-title">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3><a class="text-info" routerLink="../listings/{{booking.listing_id}}">{{booking.listing_name}}</a></h3>
+                    <p class="text-secondary">{{booking.listing_address}}</p>
+                </div>
+                <div class="col-md-4">
+                    <p *ngIf="booking.is_approved==0" class="text-info">Waiting for Approval</p>
+                    <p *ngIf="booking.is_approved==1" class="text-success">Approved</p>
+                    <p *ngIf="booking.is_approved==2" class="text-danger">Cancelled</p>
+                    <button *ngIf="booking.is_approved==0" class="btn btn-danger" (click) = "deleteBooking(booking)">Cancel booking</button>
+                </div>
+            </div>
+            
+        </div>
+        <div class="card-text">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Start date: {{dateStart[0] | date}}</li>
+                <li class="list-group-item">End date: {{dateEnd[0] | date}}</li>
+                <li class="list-group-item">Total Price: Php{{booking.price_for_stay}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,8 @@
 export class Listing {
-    id: number;
+    id: string;
     user_id: number;
+    first_name: string;
+    last_name: string;
     name: string;
     description: string;
     property_type: string;
@@ -14,4 +16,5 @@ export class Listing {
     price_by_night: number;
     created_at: Date;
     updated_at: Date;
+    distance: number;
 }

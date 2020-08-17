@@ -1,0 +1,9 @@
+<div *ngIf="!bookings || bookings.length==0">
+    You haven't booked anything at the moment. Check out some listings!
+</div>
+<div *ngIf="bookings.length > 0">
+    <div *ngFor="let booking of bookings">
+        <app-user-booking-details [booking]="booking"></app-user-booking-details>
+    </div>
+    
+</div>

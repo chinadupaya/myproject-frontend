@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
     this.fetchUser()
   }
   fetchUser(){
+    console.log(userObj);
     var userObj = JSON.parse(this.cookieService.get('Test'));
     this.user = userObj;
   }

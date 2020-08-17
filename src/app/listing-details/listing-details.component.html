@@ -1,4 +1,5 @@
 
+
     <button class="btn btn-outline-secondary" (click)="goBack()">
         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left-short" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M7.854 4.646a.5.5 0 0 1 0 .708L5.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z"/>
@@ -6,12 +7,26 @@
         </svg>
         Go back
     </button>
-    <h1>{{listing.name}}</h1> 
+    <h1>{{listing.name}}</h1>
+    <app-listing-images [listingId]=listing.id></app-listing-images>
     <div>
         <h4>{{listing.description}}</h4>
         <p>{{listing.max_guest}} guests • {{listing.bed_count}} beds • {{listing.bathroom_count}} bathrooms</p>
+        <p class="my-3"><a class="text-info mr-1" routerLink="../../users/{{listing.user_id}}">by {{listing.first_name}} {{listing.last_name}}</a> 
+        <button class="btn btn-outline-info" *ngIf="!isOwnedByUser" (click)="createRoom()">Send a message</button>
+        </p>
     </div>
     <hr/>
+    <div class="my-3">
+        <google-map width="100%" [center]="center">
+            <map-marker
+                [position]="marker.position"
+                [label]="marker.label"
+                [title]="marker.title"
+                [options]="marker.options"
+            ></map-marker>
+        </google-map>
+    </div>
     <div class="row">
         <div class="col-md-8">
             <div class="container-fluid">
@@ -30,14 +45,20 @@
                         </svg>
                         <span class="roomStyle ml-1">{{listing.room_type}}</span> • {{roomDescription}}
                     </li>
-                  </ul>
+                </ul>
+                
             </div>
         </div>
-        <div class="col-md-4 my-md-0 my-3 bookingForm">
+        <div *ngIf="isOwnedByUser" class="col-md-4 my-md-0">
+            <app-listing-bookings [listingId]=listing.id></app-listing-bookings>
+            
+        </div>
+        <div *ngIf="!isOwnedByUser" class="col-md-4 my-md-0 my-3 bookingForm">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <h6>Php{{listing.price_by_night}}/night</h6>
                 <div class="input-group">
-                    <input class="form-control" 
+                    <input class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }"
                         placeholder="Check In"
                         name="dp" 
                         [(ngModel)]="model1" 
@@ -54,8 +75,12 @@
                         </svg>
                       </button>
                     </div>
+                    <div *ngIf="submitted && f.startDate.errors" class="invalid-feedback">
+                        <div *ngIf="f.firstName.errors.required">Start date is required</div>
+                    </div>
                     <div class="input-group">
                         <input class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.endDate.errors }"
                             placeholder="Check Out"
                             name="dp" 
                             [(ngModel)]="model2"
@@ -75,19 +100,21 @@
                     </div>
                     <span *ngIf="totalPrice" class="mt-2"><h5>Total price: Php{{totalPrice}}</h5></span>
                 </div>
-                <button type="submit" class="btn btn-info mt-3">Book this Place</button>
+                <button type="submit" class="btn btn-outline-info mt-3">Book this Place</button>
             </form>
         </div>
     </div>
     
     <div class="container mt-3">
         <h2>Reviews</h2>
-        <div *ngIf="!reviews"><p class="text-secondary">There are no reviews for this listing</p></div>
-        <div *ngIf="reviews">
+        <div *ngIf="reviews.length==0"><p class="text-secondary">There are no reviews for this listing</p></div>
+        <app-review-create [listingId]="listing.id" [reviews]="reviews"></app-review-create>
+        <div *ngIf="reviews.length>0">
             <div class="row">
                 <div class="col-md-6" *ngFor="let review of reviews">
                     <div class="card">
                         <div class="card-body">
+                            <strong><a class="text-info" routerLink="../../users/{{review.user_id}}">{{review.first_name}} {{review.last_name}}</a></strong>
                             <div class="card-title">
                                 {{review.rating_num}}
                                 <ng-container *ngFor="let i of [].constructor(review.rating_num)">
@@ -98,11 +125,10 @@
                             </div>
                             <div class="card-text">
                                 {{review.content}} <br/>
-                                Created at: {{convertDate(review.created_at)}}
+                                Created at: {{review.created_at.split('T')[0] | date}}
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>

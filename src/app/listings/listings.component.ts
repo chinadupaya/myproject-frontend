@@ -20,6 +20,9 @@ export class ListingsComponent implements OnInit {
     sortByValue: new FormControl('date'),
     sortByOrder: new FormControl('ascending'),
   });
+  address=this.apiService.getLatLng().address;
+  latitude = this.apiService.getLatLng().latitude;
+  longitude=this.apiService.getLatLng().longitude;
   bedCount=0;
   bathCount=0;
   roomType="";
@@ -34,13 +37,13 @@ export class ListingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchListings();
+
   }
   get f(){
     return this.form.controls;
   }
   submit(){
     if(this.form.status === 'VALID'){
-      console.log(this.form.value);
       this.sortBy="";
       if (this.form.value.sortByValue == "date"){
         this.sortBy+="date_"
@@ -54,22 +57,27 @@ export class ListingsComponent implements OnInit {
       }
       this.apiService.fetchListings(
         1,
+        this.latitude,
+        this.longitude,
         this.form.value.bedCount,
         this.form.value.bathCount,
         this.form.value.roomType,
         this.form.value.propertyType,
         this.sortBy)
       .subscribe((listings)=>{
+        console.log(listings);
         this.bedCount=this.form.value.bedCount;
         this.bathCount=this.form.value.bathCount;
         this.roomType=this.form.value.roomType;
         this.propertyType=this.form.value.propertyType;
         this.listings=listings.data;
-        this.page=listings.page;
+        this.page=1;
         this.router.navigate([], {
           relativeTo: this.route,
           queryParams: {
-            page_num: this.page,
+            page_num: 1,
+            latitude: this.latitude,
+            longitude: this.longitude,
             bed_count: this.bedCount,
             bath_count: this.bathCount,
             room_type: this.roomType,
@@ -82,19 +90,25 @@ export class ListingsComponent implements OnInit {
     }
 } 
 fetchListings(){
-  this.apiService.fetchListings(this.page,this.bedCount,
+  this.apiService.fetchListings(
+    this.page,
+    this.latitude, 
+    this.longitude,
+    this.bedCount,
     this.bathCount,
     this.roomType,
     this.propertyType,
     this.sortBy)
     .subscribe((listings)=>{  
+      console.log(listings)
       this.listings = listings.data;  
-      this.page = listings.page
     })  
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         page_num: this.page,
+        latitude: this.latitude,
+        longitude: this.longitude,
         bed_count: this.bedCount,
         bath_count: this.bathCount,
         room_type: this.roomType,
@@ -103,56 +117,76 @@ fetchListings(){
 
       },
       queryParamsHandling: 'merge',
-      // preserve the existing query params in the route
     })
 }
-
-  next(){
-    console.log(this.sortBy);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        page_num: +this.page+1
-      },
-      queryParamsHandling: 'merge',
-      // preserve the existing query params in the route
-    })
-    this.apiService.fetchListings(+this.page+1,this.bedCount,
+next(){
+  console.log(this.sortBy);
+  this.router.navigate([], {
+    relativeTo: this.route,
+    queryParams: {
+      page_num: +this.page+1
+    },
+    queryParamsHandling: 'merge',
+    // preserve the existing query params in the route
+  })
+  this.apiService.fetchListings(+this.page+1,
+    this.latitude,
+    this.longitude,
+    this.bedCount,
+    this.bathCount,
+    this.roomType,
+    this.propertyType,
+    this.sortBy)
+  .subscribe((listings)=>{  
+    this.listings = listings.data;  
+    this.page = listings.page;
+  })  
+}
+back(){
+  console.log(this.sortBy);
+  this.router.navigate([], {
+    relativeTo: this.route,
+    queryParams: {
+      page_num: +this.page-1
+    },
+    queryParamsHandling: 'merge',
+    // preserve the existing query params in the route
+  })
+  this.apiService.fetchListings(+this.page-1,
+    this.latitude,
+    this.longitude,
+      this.bedCount,
       this.bathCount,
       this.roomType,
       this.propertyType,
       this.sortBy)
-    .subscribe((listings)=>{  
-      this.listings = listings.data;  
-      this.page = listings.page;
-		})  
-  }
-  back(){
-    console.log(this.sortBy);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        page_num: +this.page-1
-      },
-      queryParamsHandling: 'merge',
-      // preserve the existing query params in the route
-    })
-    this.apiService.fetchListings(+this.page-1,this.bedCount,
-        this.bathCount,
-        this.roomType,
-        this.propertyType,
-        this.sortBy)
-    .subscribe((listings)=>{  
-      this.listings = listings.data;  
-      this.page = listings.page;
-		})  
-  }
-  pageIsNotAvailable(page){
-    if (page-1 <=0){
-      return true;
-    }else{
-      return false;
-    }
-  }
+  .subscribe((listings)=>{  
+    this.listings = listings.data;  
+    this.page = listings.page;
+  })  
+}
+last(){
+  console.log(this.sortBy);
+  this.router.navigate([], {
+    relativeTo: this.route,
+    queryParams: {
+      page_num: 99
+    },
+    queryParamsHandling: 'merge',
+    // preserve the existing query params in the route
+  })
+  this.apiService.fetchListings(99,
+    this.latitude,
+    this.longitude,
+    this.bedCount,
+    this.bathCount,
+    this.roomType,
+    this.propertyType,
+    this.sortBy)
+  .subscribe((listings)=>{  
+    this.listings = listings.data;  
+    this.page = listings.page;
+  })  
+}
 
 }

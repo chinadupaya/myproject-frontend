@@ -1,0 +1,26 @@
+<div *ngIf="!listings || listings.length==0">
+    You haven't made any listings yet.
+</div>
+<div *ngIf="listings.length > 0">
+    <div *ngFor="let listing of listings">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4><a class="text-info" routerLink="../listings/{{listing.id}}">{{listing.name}}</a></h4>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-info mr-3" routerLink="../listings/{{listing.id}}/edit">Update</a>
+                        <button class="btn btn-danger" (click)="deleteListing(listing.id)">Delete</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <app-user-listings-upload [listing]="listing"></app-user-listings-upload>
+                </div>
+                
+            </div>  
+        </div>
+        
+    </div>
+    
+</div>

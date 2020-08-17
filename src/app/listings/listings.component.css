@@ -1,8 +1,9 @@
 
 
-  .image {
-    background: #000;
-    height: 150px
+  .image-container .image {
+    width:100%;
+    height: 140px;
+    object-fit:cover;
   }
 
   .content {

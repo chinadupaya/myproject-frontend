@@ -1,0 +1,59 @@
+
+<div class="container-fluid">
+	<div class="row no-gutters" >
+	  <div class="col-md-4 border-right">
+		<div class="settings-tray">
+		  <h6>Messages</h6>
+		</div>
+		<app-chat-list></app-chat-list>
+		
+
+	  </div>
+	  <div class="col-md-8">
+		<div class="settings-tray">
+			<div class="friend-drawer no-gutters friend-drawer--grey">
+			<div class="text">
+			  <h6>Chat</h6>
+			</div>
+		  </div>
+        </div>
+		<div class="chat-panel">
+      <div class="messages-container">
+        <div *ngFor="let message of messages" class="row no-gutters">
+          <div *ngIf="message.sent_by!=user.id" class="col-md-3">
+            <div class="chat-bubble chat-bubble--left">
+              {{message.content}}
+            </div>
+          </div>
+          <div *ngIf="message.sent_by==user.id" class="col-md-3 offset-md-9">
+            <div class="chat-bubble chat-bubble--right">
+              {{message.content}}
+            </div>
+          </div>
+        </div>	
+			</div>
+			<span><i *ngIf="isTyping" class="isTyping">typing...</i></span>
+		  <div class="row">
+			<div class="col-12">
+			  <div class="chat-box-tray">
+				<input [(ngModel)]="message" (keypress)="typing()" (keyup)="$event.keyCode == 13 && sendMessage()" type="text" placeholder="Type your message here...">
+				<button class="btn">
+					<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-image" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M14.002 2h-12a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm-12-1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12z"/>
+						<path d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V14h-14v-2l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
+						<path fill-rule="evenodd" d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+					</svg>
+				</button>	
+				
+                <button (click)="sendMessage()" class="btn">
+                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-right-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm5.646 10.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.793 7.5H5a.5.5 0 0 0 0 1h4.793l-2.147 2.146z"/>
+                    </svg>
+                </button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>

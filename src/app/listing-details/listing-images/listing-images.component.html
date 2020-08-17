@@ -1,0 +1,12 @@
+
+<ngb-carousel *ngIf="images.length > 0">
+    <ng-template ngbSlide *ngFor="let image of images">
+      <div class="picsum-img-wrapper">
+        <img [src]="transform(image.listing_file)" alt="Random first slide">
+      </div>
+      <div class="carousel-caption">
+        <h3>You don't need to go far to find what matters</h3>
+        <p>All listing information at the tip of your fingertips.</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>

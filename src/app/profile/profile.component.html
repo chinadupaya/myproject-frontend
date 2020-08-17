@@ -1,2 +1,15 @@
-<h1>Welcome {{user.first_name}} {{user.last_name}}</h1>
-<h4 class="text-secondary">Your current email is {{user.email}}</h4>
+<div class="jumbotron">
+    <h1 class="display-4">Welcome {{user.first_name}} {{user.last_name}}</h1>
+    <p class="lead">Your current email is {{user.email}}.</p>
+    <hr class="my-4">
+    <p class="lead">
+      <a class="btn btn-primary btn-lg mr-2" routerLink="../create-listing" role="button">Create a listing</a>
+      <a class="btn btn-outline-secondary btn-lg" routerLink="../profile/edit" role="button">Edit Profile</a>
+    </p>
+  </div>
+<hr/>
+<h2>My bookings</h2>
+<app-user-bookings [userId]="user.id"></app-user-bookings>
+<hr/>
+<h2>My listings</h2>
+<app-user-listings [userId]="user.id"></app-user-listings>

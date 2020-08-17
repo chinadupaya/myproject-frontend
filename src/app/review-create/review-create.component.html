@@ -1,0 +1,13 @@
+<div *ngIf="userHasBookingBool" class="my-3">
+    <h3>Leave a review!</h3>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <ngb-rating max="5" [(rate)]="currentRate" formControlName="ratingNum"></ngb-rating> <pre>Rate: <b>{{currentRate}}</b></pre>
+        </div>
+        <div class="form-group">
+            <textarea rows="3" formControlName="content" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-info">Submit</button>
+        
+    </form>
+</div>
